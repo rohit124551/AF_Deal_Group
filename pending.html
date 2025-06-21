@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base target="_top">
     <title>Pending Order Lookup Portal</title>
+    <!-- Favicons for all devices -->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="favicon_io/site.webmanifest">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon_io/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon_io/android-chrome-512x512.png">
+    <link rel="shortcut icon" href="favicon_io/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -967,6 +975,63 @@
     </style>
   </head>
   <body>
+    <!-- Navigation Bar -->
+    <nav class="main-nav">
+        <a href="index.html" class="nav-link" title="Home"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></a>
+        <a href="pending.html" class="nav-link active" title="Pending Order Forms"><span class="nav-icon">⏳</span><span class="nav-label">Pending</span></a>
+        <a href="paid.html" class="nav-link" title="Paid Payments"><span class="nav-icon">✅</span><span class="nav-label">Paid</span></a>
+    </nav>
+    <style>
+        .main-nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 18px;
+            background: rgba(255,255,255,0.85);
+            box-shadow: 0 2px 16px 0 #764ba222;
+            z-index: 1001;
+            padding: 10px 0 6px 0;
+            backdrop-filter: blur(8px) saturate(1.2);
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 1.08rem;
+            font-weight: 600;
+            color: #764ba2;
+            text-decoration: none;
+            padding: 7px 18px;
+            border-radius: 12px;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        .nav-link .nav-icon {
+            font-size: 1.2em;
+        }
+        .nav-link.active, .nav-link:hover {
+            background: linear-gradient(90deg, #f3e8ff 0%, #e9d8fd 100%);
+            color: #4a5568;
+            box-shadow: 0 2px 8px #764ba222;
+        }
+        @media (max-width: 600px) {
+            .main-nav {
+                gap: 6px;
+                padding: 7px 0 3px 0;
+            }
+            .nav-link {
+                font-size: 0.98rem;
+                padding: 6px 10px;
+                gap: 4px;
+            }
+            .nav-link .nav-label {
+                display: none;
+            }
+        }
+    </style>
+    <div style="height:54px;"></div> <!-- Spacer for nav -->
     <div class="container">
         <div class="header">
             <h2><i class="fas fa-search"></i> Pending Order Lookup Portal</h2>
