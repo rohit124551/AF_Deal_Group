@@ -15,6 +15,10 @@
     <link rel="shortcut icon" href="favicon_io/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Add these in the <head> section -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -972,6 +976,100 @@
                 border-color: #667eea;
             }
         }
+
+        /* Internet Connection Status Banner */
+        .connection-status {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 2000;
+            background: #f56565; color: #fff; text-align: center;
+            font-weight: 600; font-size: 1.08rem; padding: 10px 0;
+            box-shadow: 0 2px 12px #e53e3e33;
+            letter-spacing: 0.5px;
+            animation: fadeIn 0.2s;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .custom-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255,255,255,0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10002;
+            opacity: 0;
+            animation: overlayFadeIn 0.35s cubic-bezier(.4,0,.2,1) forwards, overlayPulse 0.5s cubic-bezier(.4,0,.2,1);
+            backdrop-filter: blur(8px) saturate(1.2);
+        }
+        @keyframes overlayFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes overlayPulse {
+            0% { box-shadow: 0 0 0 0 #764ba244; }
+            70% { box-shadow: 0 0 0 40px #764ba222; }
+            100% { box-shadow: 0 0 0 0 #764ba200; }
+        }
+        .loading {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            border: 5px solid rgba(118,75,162,0.15);
+            border-radius: 50%;
+            border-top: 5px solid #764ba2;
+            border-right: 5px solid #667eea;
+            border-bottom: 5px solid #f093fb;
+            animation: spin 1s linear infinite, glow 1.2s ease-in-out infinite alternate;
+            box-shadow: 0 0 18px 4px #764ba2aa;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes glow {
+            0% { box-shadow: 0 0 18px 4px #764ba2aa; }
+            100% { box-shadow: 0 0 32px 10px #f093fbcc; }
+        }
+        .loading-text {
+            margin-top: 24px;
+            font-size: 1.3rem;
+            color: #764ba2;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px #fff8, 0 1px 0 #fff;
+            animation: loadingTextFade 1.2s infinite alternate;
+        }
+        @keyframes loadingTextFade {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        .info-banner {
+          margin: 18px auto 18px auto;
+          background: #f3e8ff;
+          color: #764ba2;
+          border-radius: 10px;
+          font-size: 1.08rem;
+          font-weight: 500;
+          box-shadow: 0 1px 6px #764ba111;
+          max-width: 600px;
+          text-align: center;
+          letter-spacing: 0.1px;
+          border: 1.2px solid #e9d8fd;
+          padding: 12px 18px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          justify-content: center;
+        }
+        .info-banner i { font-size: 1.2em; color: #764ba2; }
+        @media (max-width: 600px) {
+          .info-banner {
+            font-size: 0.98rem;
+            padding: 10px 4vw;
+            max-width: 98vw;
+          }
+        }
     </style>
   </head>
   <body>
@@ -1065,6 +1163,11 @@
             </form>
         </div>
 
+        <div class="info-banner">
+          <i class="fas fa-info-circle"></i>
+          If your order is cancelled or has been updated incorrectly, please inform the admin to have it corrected.
+        </div>
+
         <div class="status-section">
             <div id="inputLog" class="input-log" style="display: none;"></div>
             <div id="status" class="status-message" style="display: none;"></div>
@@ -1109,6 +1212,107 @@
         </div>
     </div>
 
+    <!-- Internet Connection Status Banner -->
+    <div id="connectionStatus" class="connection-status" style="display:none;">⚠️ Internet connection lost. Some features may not work.</div>
+    <style>
+      .connection-status {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 2000;
+        background: #f56565; color: #fff; text-align: center;
+        font-weight: 600; font-size: 1.08rem; padding: 10px 0;
+        box-shadow: 0 2px 12px #e53e3e33;
+        letter-spacing: 0.5px;
+        animation: fadeIn 0.2s;
+      }
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      .custom-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255,255,255,0.7);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 10002;
+        opacity: 0;
+        animation: overlayFadeIn 0.35s cubic-bezier(.4,0,.2,1) forwards, overlayPulse 0.5s cubic-bezier(.4,0,.2,1);
+        backdrop-filter: blur(8px) saturate(1.2);
+      }
+      @keyframes overlayFadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes overlayPulse {
+        0% { box-shadow: 0 0 0 0 #764ba244; }
+        70% { box-shadow: 0 0 0 40px #764ba222; }
+        100% { box-shadow: 0 0 0 0 #764ba200; }
+      }
+      .loading {
+        display: inline-block;
+        width: 48px;
+        height: 48px;
+        border: 5px solid rgba(118,75,162,0.15);
+        border-radius: 50%;
+        border-top: 5px solid #764ba2;
+        border-right: 5px solid #667eea;
+        border-bottom: 5px solid #f093fb;
+        animation: spin 1s linear infinite, glow 1.2s ease-in-out infinite alternate;
+        box-shadow: 0 0 18px 4px #764ba2aa;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      @keyframes glow {
+        0% { box-shadow: 0 0 18px 4px #764ba2aa; }
+        100% { box-shadow: 0 0 32px 10px #f093fbcc; }
+      }
+      .loading-text {
+        margin-top: 24px;
+        font-size: 1.3rem;
+        color: #764ba2;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-shadow: 0 2px 8px #fff8, 0 1px 0 #fff;
+        animation: loadingTextFade 1.2s infinite alternate;
+      }
+      @keyframes loadingTextFade {
+        0% { opacity: 0.7; }
+        100% { opacity: 1; }
+      }
+    </style>
+    <script>
+      // Internet connection status
+      function updateConnectionStatus() {
+        const status = document.getElementById('connectionStatus');
+        if (navigator.onLine) {
+          status.style.display = 'none';
+        } else {
+          status.style.display = 'block';
+        }
+      }
+      window.addEventListener('online', updateConnectionStatus);
+      window.addEventListener('offline', updateConnectionStatus);
+      document.addEventListener('DOMContentLoaded', updateConnectionStatus);
+      // Navbar navigation with loading overlay
+      function navNavigate(page) {
+        let overlay = document.createElement('div');
+        overlay.className = 'custom-overlay';
+        overlay.innerHTML = '<div class="loading"></div><div class="loading-text">Loading...</div>';
+        document.body.appendChild(overlay);
+        setTimeout(() => {
+          window.location.href = page;
+        }, 700);
+      }
+      document.querySelectorAll('.navbar-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const page = this.getAttribute('href');
+          navNavigate(page);
+        });
+      });
+    </script>
     <script>
         let currentResults = [];
         let searchResultsOriginal = [];
@@ -1321,17 +1525,31 @@
                 alert("No data to export!");
                 return;
             }
-
             const btn = document.getElementById("exportPdfBtn");
             btn.innerHTML = '<span class="loading"></span>Generating PDF...';
             btn.disabled = true;
 
-            // Simulate PDF generation (replace with actual PDF generation logic)
-            setTimeout(() => {
-                alert("PDF export functionality would be implemented here!");
-                btn.innerHTML = '<i class="fas fa-file-pdf"></i> Export PDF';
-                btn.disabled = false;
-            }, 2000);
+            // Prepare data for PDF
+            const columns = Object.keys(currentResults[0]).filter(col => !hiddenColumns.includes(col));
+            const rows = currentResults.map(row => columns.map(col => row[col] || ""));
+
+            // Generate PDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.autoTable({
+                head: [columns],
+                body: rows,
+                styles: { fontSize: 9 },
+                headStyles: { fillColor: [102, 126, 234] },
+                margin: { top: 18 },
+                didDrawPage: function (data) {
+                    doc.setFontSize(14);
+                    doc.text("Pending Orders Export", data.settings.margin.left, 12);
+                }
+            });
+            doc.save("pending_orders.pdf");
+            btn.innerHTML = '<i class="fas fa-file-pdf"></i> Export PDF';
+            btn.disabled = false;
         }
 
         function exportToExcel() {
@@ -1339,17 +1557,23 @@
                 alert("No data to export!");
                 return;
             }
-
             const btn = document.getElementById("exportExcelBtn");
             btn.innerHTML = '<span class="loading"></span>Generating Excel...';
             btn.disabled = true;
 
-            // Simulate Excel generation (replace with actual Excel generation logic)
-            setTimeout(() => {
-                alert("Excel export functionality would be implemented here!");
-                btn.innerHTML = '<i class="fas fa-file-excel"></i> Export Excel';
-                btn.disabled = false;
-            }, 2000);
+            // Prepare data for Excel
+            const columns = Object.keys(currentResults[0]).filter(col => !hiddenColumns.includes(col));
+            const rows = currentResults.map(row => {
+                const obj = {};
+                columns.forEach(col => { obj[col] = row[col] || ""; });
+                return obj;
+            });
+            const ws = XLSX.utils.json_to_sheet(rows);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Pending Orders");
+            XLSX.writeFile(wb, "pending_orders.xlsx");
+            btn.innerHTML = '<i class="fas fa-file-excel"></i> Export Excel';
+            btn.disabled = false;
         }
 
         // Search within results functionality
@@ -1452,14 +1676,6 @@
                 const value = this.value.trim();
                 const searchBtn = document.getElementById('searchBtn');
                 searchBtn.disabled = !value;
-            });
-
-            // Add keyboard shortcuts
-            document.addEventListener('keydown', function(e) {
-                if (e.ctrlKey && e.key === 'k') {
-                    e.preventDefault();
-                    document.getElementById('searchValue').focus();
-                }
             });
         });
     </script>
@@ -2200,6 +2416,63 @@
 
         // Make satisfaction tracking available globally
         window.trackSearchSatisfaction = trackSearchSatisfaction;
+    </script>
+    <!-- Register Service Worker for PWA -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('service-worker.js');
+        });
+      }
+    </script>
+    <div id="updateBanner" class="update-banner" style="display:none;">
+      <span>🔄 A new version is available.</span>
+      <button onclick="location.reload()" class="update-btn">Refresh</button>
+    </div>
+    <style>
+      .update-banner {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #764ba2;
+        color: #fff;
+        padding: 12px 24px;
+        border-radius: 999px;
+        box-shadow: 0 4px 18px #764ba244;
+        font-size: 1.08rem;
+        font-weight: 500;
+        z-index: 3000;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        animation: fadeIn 0.3s;
+      }
+      .update-btn {
+        background: #fff;
+        color: #764ba2;
+        border: none;
+        border-radius: 999px;
+        padding: 7px 18px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-left: 10px;
+        transition: background 0.2s, color 0.2s;
+      }
+      .update-btn:hover {
+        background: #f3e8ff;
+        color: #5a189a;
+      }
+    </style>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.addEventListener('message', function(event) {
+          if (event.data && event.data.type === 'NEW_VERSION_AVAILABLE') {
+            document.getElementById('updateBanner').style.display = 'flex';
+          }
+        });
+      }
     </script>
   </body>
 </html>

@@ -52,6 +52,7 @@
             border: 1px solid rgba(255,255,255,0.2);
             max-width: 600px;
             width: 90%;
+            margin: 0 auto;
             animation: containerFadeIn 0.8s cubic-bezier(.4,0,.2,1);
             z-index: 1;
         }
@@ -285,6 +286,10 @@
             }
         }
 
+        @media (max-width: 600px) {
+            .container { margin-top: 17px; margin-bottom: auto; }
+        }
+
         /* Loading animation */
         .loading {
             display: inline-block;
@@ -413,6 +418,84 @@
             from { opacity: 0; transform: translateY(40px) scale(0.98); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
+
+        /* Floating PWA Info Button */
+        .pwa-info-btn {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 1200;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 54px;
+            height: 54px;
+            font-size: 1.7rem;
+            box-shadow: 0 4px 18px #764ba244;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .pwa-info-btn:hover { background: #764ba2; transform: scale(1.08); }
+        .pwa-modal {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.32); z-index: 1300;
+            display: flex; align-items: center; justify-content: center;
+            animation: fadeIn 0.2s;
+        }
+        .pwa-modal-content {
+            background: #fff; border-radius: 18px; max-width: 420px; width: 92vw;
+            padding: 32px 24px 24px 24px; box-shadow: 0 8px 32px #764ba244;
+            position: relative; text-align: left;
+            animation: modalPop 0.25s cubic-bezier(.4,0,.2,1);
+        }
+        .pwa-modal-close {
+            position: absolute; top: 12px; right: 18px; background: none; border: none;
+            font-size: 2rem; color: #764ba2; cursor: pointer; border-radius: 50%; width: 38px; height: 38px;
+            transition: background 0.2s;
+        }
+        .pwa-modal-close:hover { background: #f3e8ff; }
+        .pwa-modal h2 { margin-top: 0; color: #764ba2; font-size: 1.3rem; }
+        .pwa-modal h3 { color: #667eea; font-size: 1.08rem; margin-bottom: 7px; }
+        .pwa-feature-list, .pwa-steps { margin: 0 0 18px 0; padding-left: 18px; }
+        .pwa-feature-list li, .pwa-steps li { margin-bottom: 7px; font-size: 1rem; color: #4a5568; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes modalPop { from { transform: scale(0.95); opacity: 0.7; } to { transform: scale(1); opacity: 1; } }
+        .connection-status {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 2000;
+            background: #f56565; color: #fff; text-align: center;
+            font-weight: 600; font-size: 1.08rem; padding: 10px 0;
+            box-shadow: 0 2px 12px #e53e3e33;
+            letter-spacing: 0.5px;
+            animation: fadeIn 0.2s;
+        }
+        @media (max-width: 600px) {
+            .pwa-info-btn { width: 44px; height: 44px; font-size: 1.2rem; bottom: 16px; right: 16px; }
+            .pwa-modal-content { padding: 18px 7vw 18px 7vw; }
+        }
+        .install-note-inside {
+            margin: 18px auto 0 auto;
+            padding: 7px 0 6px 0;
+            background: #f3e8ff;
+            color: #764ba2;
+            border-radius: 8px;
+            font-size: 1.04rem;
+            font-weight: 500;
+            box-shadow: 0 1px 6px #764ba111;
+            max-width: 350px;
+            text-align: center;
+            letter-spacing: 0.1px;
+            border: 1.2px solid #e9d8fd;
+            transition: background 0.2s;
+        }
+        .install-note-inside b { color: #764ba2; }
+        @media (max-width: 600px) {
+            .install-note-inside {
+                font-size: 0.97rem;
+                padding: 6px 0 5px 0;
+                max-width: 95vw;
+            }
+        }
     </style>
 </head>
 <body>
@@ -442,7 +525,36 @@
                 <div class="option-desc">Check payment status of completed orders</div>
 </div>
 </div>
+        <div class="install-note-inside">You can now <b>install</b> this portal as an app on your device!<br>To know more, click on the <b>ℹ️</b> button.</div>
 </div>
+
+    <!-- Floating PWA Info Button -->
+    <button class="pwa-info-btn" onclick="showPwaInfoModal()" title="Learn about app features" aria-label="PWA Info">ℹ️</button>
+    <!-- PWA Info Modal (hidden by default) -->
+    <div id="pwaInfoModal" class="pwa-modal" tabindex="-1" aria-modal="true" role="dialog" style="display:none;">
+      <div class="pwa-modal-content">
+        <button class="pwa-modal-close" onclick="hidePwaInfoModal()" aria-label="Close">×</button>
+        <h2>📱 Progressive Web App (PWA) Features</h2>
+        <div class="install-message">✨ <b>Good news!</b> You can now <b>install</b> this portal as an app and use it just like a native app on your device.</div>
+        <ul class="pwa-feature-list">
+          <li><b>Installable:</b> Add this portal to your home screen for a native app experience.</li>
+          <li><b>Offline Support:</b> Access main pages even without internet.</li>
+          <li><b>Fast Loading:</b> Frequently visited pages load instantly.</li>
+        </ul>
+        <h3>How to Install</h3>
+        <ol class="pwa-steps">
+          <li>On desktop, click the <b>install</b> icon in your browser's address bar (usually a plus sign or phone icon).</li>
+          <li>On mobile, tap the browser menu and select <b>Add to Home screen</b>.</li>
+        </ol>
+        <h3>Offline Usage</h3>
+        <ul class="pwa-feature-list">
+          <li>If you lose internet, you can still open the portal and view cached pages.</li>
+          <li>When back online, the app will update automatically.</li>
+        </ul>
+</div>
+</div>
+    <!-- Internet Connection Status Banner -->
+    <div id="connectionStatus" class="connection-status" style="display:none;">⚠️ Internet connection lost. Some features may not work.</div>
 
     <script>
         // Theme management
@@ -549,6 +661,37 @@
                 setTimeout(() => toast.remove(), 300);
             }, 4000);
         }
+
+        // PWA Info Modal logic
+        function showPwaInfoModal() {
+            document.getElementById('pwaInfoModal').style.display = 'flex';
+            document.getElementById('pwaInfoModal').focus();
+        }
+        function hidePwaInfoModal() {
+            document.getElementById('pwaInfoModal').style.display = 'none';
+        }
+        // Close modal on Escape or click outside
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') hidePwaInfoModal();
+        });
+        document.addEventListener('mousedown', function(e) {
+            const modal = document.getElementById('pwaInfoModal');
+            if (modal && modal.style.display === 'flex' && !modal.querySelector('.pwa-modal-content').contains(e.target)) {
+                hidePwaInfoModal();
+            }
+        });
+        // Internet connection status
+        function updateConnectionStatus() {
+            const status = document.getElementById('connectionStatus');
+            if (navigator.onLine) {
+                status.style.display = 'none';
+            } else {
+                status.style.display = 'block';
+            }
+        }
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+        document.addEventListener('DOMContentLoaded', updateConnectionStatus);
     </script>
 
     <!-- Google Analytics -->
@@ -577,6 +720,15 @@
             trackNavigation(page);
             originalNavigateToPage(page);
         };
+</script>
+
+    <!-- Register Service Worker for PWA -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('service-worker.js');
+        });
+      }
 </script>
 </body>
 </html>
