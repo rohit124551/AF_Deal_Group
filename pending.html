@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base target="_top">
@@ -965,8 +965,8 @@
             }
         }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
         <div class="header">
             <h2><i class="fas fa-search"></i> Order Lookup Portal</h2>
@@ -980,10 +980,10 @@
                     </label>
                     <select id="searchType" class="form-control" required>
                         <option value="" disabled selected>Select search option</option>
-                        <option value="Email Address">Email ID</option>
-                        <option value="Order ID">Order ID</option>
-                        <option value="Whatsapp Number">WhatsApp Number</option>
-                    </select>
+      <option value="Email Address">Email ID</option>
+      <option value="Order ID">Order ID</option>
+      <option value="Whatsapp Number">WhatsApp Number</option>
+    </select>
                 </div>
 
                 <div class="form-group">
@@ -1054,20 +1054,20 @@
         function searchNow(event) {
             event.preventDefault();
             
-            const type = document.getElementById("searchType").value;
-            const value = document.getElementById("searchValue").value.trim();
-            const status = document.getElementById("status");
-            const log = document.getElementById("inputLog");
-            const resultsDiv = document.getElementById("results");
+        const type = document.getElementById("searchType").value;
+        const value = document.getElementById("searchValue").value.trim();
+        const status = document.getElementById("status");
+        const log = document.getElementById("inputLog");
+        const resultsDiv = document.getElementById("results");
             const searchBtn = document.getElementById("searchBtn");
             const exportSection = document.getElementById("exportSection");
             const searchWithinContainer = document.getElementById("searchWithinContainer");
             const columnDropdownContainer = document.getElementById("columnDropdownContainer");
 
-            if (!value) {
+        if (!value) {
                 showStatus("Please enter a search value.", "error");
-                return;
-            }
+          return;
+        }
 
             // Show loading state
             searchBtn.innerHTML = '<span class="loading"></span>Searching...';
@@ -1083,19 +1083,19 @@
             columnDropdownContainer.style.display = "none";
 
             const webAppUrl = "https://script.google.com/macros/s/AKfycbz0TH02yxj15e9oLTYFNAzDgiDyY2f64tmIDZjeZObFBL_9ytNQuQX5r4ROpSaf6Ojf/exec";
-            const query = `${webAppUrl}?type=${encodeURIComponent(type)}&value=${encodeURIComponent(value)}`;
+        const query = `${webAppUrl}?type=${encodeURIComponent(type)}&value=${encodeURIComponent(value)}`;
 
-            fetch(query)
-                .then(res => res.json())
-                .then(data => {
-                    if (!data.results || data.results.length === 0) {
+        fetch(query)
+          .then(res => res.json())
+          .then(data => {
+            if (!data.results || data.results.length === 0) {
                         showStatus("No matching records found.", "warning");
                         showEmptyState();
                         currentResults = [];
                         searchResultsOriginal = [];
                         searchResultsView = [];
-                        return;
-                    }
+              return;
+            }
 
                     currentResults = data.results;
                     searchResultsOriginal = data.results;
@@ -1399,13 +1399,742 @@
         });
     </script>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-2PRMZL2Z5X"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2PRMZL2Z5X"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-  gtag('config', 'G-2PRMZL2Z5X');
-</script>
-</body>
+        // Enhanced Google Analytics Configuration
+        gtag('config', 'G-2PRMZL2Z5X', {
+            // Enhanced measurement features
+            send_page_view: true,
+            page_title: 'Order Lookup Portal',
+            page_location: window.location.href,
+            
+            // Custom dimensions for better analysis
+            custom_map: {
+                'dimension1': 'user_type',
+                'dimension2': 'search_type',
+                'dimension3': 'results_count',
+                'dimension4': 'export_action',
+                'dimension5': 'device_type',
+                'dimension6': 'session_duration',
+                'dimension7': 'error_type',
+                'dimension8': 'feature_usage'
+            },
+            
+            // Enhanced ecommerce tracking
+            allow_enhanced_conversions: true,
+            
+            // User engagement tracking
+            engagement_time_msec: 10000,
+            
+            // Performance monitoring
+            send_page_view_on_load: true,
+            
+            // Debug mode (remove in production)
+            debug_mode: false
+        });
+
+        // Enhanced Analytics Functions
+        const Analytics = {
+            // Track search events
+            trackSearch: function(searchType, searchValue, resultsCount) {
+                gtag('event', 'search', {
+                    event_category: 'Order Lookup',
+                    event_label: searchType,
+                    value: resultsCount,
+                    custom_parameters: {
+                        search_type: searchType,
+                        search_value_length: searchValue.length,
+                        results_count: resultsCount,
+                        user_type: this.getUserType(),
+                        device_type: this.getDeviceType()
+                    }
+                });
+            },
+
+            // Track export events
+            trackExport: function(exportType, resultsCount) {
+                gtag('event', 'export', {
+                    event_category: 'Data Export',
+                    event_label: exportType,
+                    value: resultsCount,
+                    custom_parameters: {
+                        export_type: exportType,
+                        results_count: resultsCount,
+                        user_type: this.getUserType()
+                    }
+                });
+            },
+
+            // Track column visibility changes
+            trackColumnToggle: function(columnName, isVisible) {
+                gtag('event', 'column_toggle', {
+                    event_category: 'Table Management',
+                    event_label: columnName,
+                    value: isVisible ? 1 : 0,
+                    custom_parameters: {
+                        column_name: columnName,
+                        action: isVisible ? 'show' : 'hide',
+                        user_type: this.getUserType()
+                    }
+                });
+            },
+
+            // Track search within results
+            trackSearchWithin: function(searchTerm, filteredCount, totalCount) {
+                gtag('event', 'search_within', {
+                    event_category: 'Data Filtering',
+                    event_label: searchTerm,
+                    value: filteredCount,
+                    custom_parameters: {
+                        search_term: searchTerm,
+                        filtered_count: filteredCount,
+                        total_count: totalCount,
+                        filter_ratio: (filteredCount / totalCount * 100).toFixed(2)
+                    }
+                });
+            },
+
+            // Track error events
+            trackError: function(errorType, errorMessage) {
+                gtag('event', 'error', {
+                    event_category: 'System Error',
+                    event_label: errorType,
+                    custom_parameters: {
+                        error_type: errorType,
+                        error_message: errorMessage,
+                        user_type: this.getUserType(),
+                        device_type: this.getDeviceType(),
+                        page_url: window.location.href
+                    }
+                });
+            },
+
+            // Track user engagement
+            trackEngagement: function(action, details) {
+                gtag('event', 'user_engagement', {
+                    event_category: 'User Interaction',
+                    event_label: action,
+                    custom_parameters: {
+                        action: action,
+                        details: details,
+                        user_type: this.getUserType(),
+                        session_duration: this.getSessionDuration(),
+                        page_load_time: this.getPageLoadTime()
+                    }
+                });
+            },
+
+            // Track performance metrics
+            trackPerformance: function(metric, value) {
+                gtag('event', 'performance', {
+                    event_category: 'Performance',
+                    event_label: metric,
+                    value: value,
+                    custom_parameters: {
+                        metric: metric,
+                        value: value,
+                        user_type: this.getUserType(),
+                        device_type: this.getDeviceType()
+                    }
+                });
+            },
+
+            // Track feature usage
+            trackFeatureUsage: function(feature, usageType) {
+                gtag('event', 'feature_usage', {
+                    event_category: 'Feature Analytics',
+                    event_label: feature,
+                    custom_parameters: {
+                        feature: feature,
+                        usage_type: usageType,
+                        user_type: this.getUserType(),
+                        device_type: this.getDeviceType()
+                    }
+                });
+            },
+
+            // Helper functions
+            getUserType: function() {
+                // Determine user type based on behavior or session
+                const sessionCount = sessionStorage.getItem('session_count') || 0;
+                if (sessionCount > 5) return 'returning_user';
+                if (sessionCount > 1) return 'active_user';
+                return 'new_user';
+            },
+
+            getDeviceType: function() {
+                const userAgent = navigator.userAgent;
+                if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)) {
+                    return 'mobile';
+                } else if (/iPad/i.test(userAgent)) {
+                    return 'tablet';
+                } else {
+                    return 'desktop';
+                }
+            },
+
+            getSessionDuration: function() {
+                const startTime = sessionStorage.getItem('session_start') || Date.now();
+                return Math.floor((Date.now() - startTime) / 1000);
+            },
+
+            getPageLoadTime: function() {
+                if (window.performance && window.performance.timing) {
+                    const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+                    return loadTime;
+                }
+                return 0;
+            },
+
+            // Initialize session tracking
+            initSession: function() {
+                const sessionCount = parseInt(sessionStorage.getItem('session_count') || 0);
+                sessionStorage.setItem('session_count', sessionCount + 1);
+                sessionStorage.setItem('session_start', Date.now());
+                
+                // Track session start
+                gtag('event', 'session_start', {
+                    event_category: 'User Session',
+                    custom_parameters: {
+                        session_count: sessionCount + 1,
+                        user_type: this.getUserType(),
+                        device_type: this.getDeviceType()
+                    }
+                });
+            }
+        };
+
+        // Enhanced search function with analytics
+        const originalSearchNow = window.searchNow;
+        window.searchNow = function(event) {
+            event.preventDefault();
+            
+            const type = document.getElementById("searchType").value;
+            const value = document.getElementById("searchValue").value.trim();
+            
+            // Track search attempt
+            Analytics.trackEngagement('search_attempt', { type, value_length: value.length });
+            
+            // Call original function
+            originalSearchNow(event);
+        };
+
+        // Enhanced display results with analytics
+        const originalDisplayResults = window.displayResults;
+        window.displayResults = function(results) {
+            // Track results display
+            Analytics.trackEngagement('results_displayed', { count: results.length });
+            
+            // Call original function
+            originalDisplayResults(results);
+        };
+
+        // Enhanced export functions with analytics
+        const originalExportToPDF = window.exportToPDF;
+        window.exportToPDF = function() {
+            Analytics.trackExport('pdf', currentResults.length);
+            originalExportToPDF();
+        };
+
+        const originalExportToExcel = window.exportToExcel;
+        window.exportToExcel = function() {
+            Analytics.trackExport('excel', currentResults.length);
+            originalExportToExcel();
+        };
+
+        // Enhanced column toggle with analytics
+        const originalToggleColumnVisibility = window.toggleColumnVisibility;
+        window.toggleColumnVisibility = function(checkbox) {
+            const column = checkbox.value;
+            const isVisible = checkbox.checked;
+            
+            Analytics.trackColumnToggle(column, isVisible);
+            originalToggleColumnVisibility(checkbox);
+        };
+
+        // Enhanced search within results with analytics
+        const originalSearchWithinResults = window.searchWithinResults;
+        window.searchWithinResults = function() {
+            const searchTerm = document.getElementById("searchWithinInput").value.trim();
+            const filteredCount = searchResultsView.length;
+            const totalCount = searchResultsOriginal.length;
+            
+            if (searchTerm) {
+                Analytics.trackSearchWithin(searchTerm, filteredCount, totalCount);
+            }
+            
+            originalSearchWithinResults();
+        };
+
+        // Performance monitoring
+        window.addEventListener('load', function() {
+            // Track page load performance
+            if (window.performance && window.performance.timing) {
+                const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+                Analytics.trackPerformance('page_load_time', loadTime);
+            }
+
+            // Track Core Web Vitals
+            if ('PerformanceObserver' in window) {
+                // Track Largest Contentful Paint (LCP)
+                new PerformanceObserver((list) => {
+                    const entries = list.getEntries();
+                    const lastEntry = entries[entries.length - 1];
+                    Analytics.trackPerformance('lcp', lastEntry.startTime);
+                }).observe({ entryTypes: ['largest-contentful-paint'] });
+
+                // Track First Input Delay (FID)
+                new PerformanceObserver((list) => {
+                    const entries = list.getEntries();
+                    entries.forEach((entry) => {
+                        Analytics.trackPerformance('fid', entry.processingStart - entry.startTime);
+                    });
+                }).observe({ entryTypes: ['first-input'] });
+
+                // Track Cumulative Layout Shift (CLS)
+                new PerformanceObserver((list) => {
+                    let cls = 0;
+                    const entries = list.getEntries();
+                    entries.forEach((entry) => {
+                        if (!entry.hadRecentInput) {
+                            cls += entry.value;
+                        }
+                    });
+                    Analytics.trackPerformance('cls', cls);
+                }).observe({ entryTypes: ['layout-shift'] });
+            }
+        });
+
+        // Error tracking
+        window.addEventListener('error', function(event) {
+            Analytics.trackError('javascript_error', event.message);
+        });
+
+        window.addEventListener('unhandledrejection', function(event) {
+            Analytics.trackError('promise_rejection', event.reason);
+        });
+
+        // User engagement tracking
+        let engagementTimer;
+        function resetEngagementTimer() {
+            clearTimeout(engagementTimer);
+            engagementTimer = setTimeout(() => {
+                Analytics.trackEngagement('user_inactive', { duration: 300 }); // 5 minutes
+            }, 300000);
+        }
+
+        // Track user interactions
+        ['click', 'scroll', 'keypress', 'mousemove'].forEach(eventType => {
+            document.addEventListener(eventType, resetEngagementTimer, { passive: true });
+        });
+
+        // Initialize analytics
+        document.addEventListener('DOMContentLoaded', function() {
+            Analytics.initSession();
+            
+            // Track page view
+            gtag('event', 'page_view', {
+                page_title: 'Order Lookup Portal',
+                page_location: window.location.href,
+                custom_parameters: {
+                    user_type: Analytics.getUserType(),
+                    device_type: Analytics.getDeviceType()
+                }
+            });
+
+            // Track feature usage on page load
+            Analytics.trackFeatureUsage('page_load', 'initial');
+        });
+
+        // Track search success/failure
+        const originalSearchSuccess = function(data) {
+            if (data.results && data.results.length > 0) {
+                Analytics.trackSearch(
+                    document.getElementById("searchType").value,
+                    document.getElementById("searchValue").value,
+                    data.results.length
+                );
+            } else {
+                Analytics.trackError('no_results', 'Search returned no results');
+            }
+        };
+
+        // Track search errors
+        const originalSearchError = function(error) {
+            Analytics.trackError('search_error', error.message || 'Unknown search error');
+        };
+
+        // Enhanced Google Analytics Configuration for E-commerce
+        gtag('config', 'G-2PRMZL2Z5X', {
+            // E-commerce tracking
+            allow_enhanced_conversions: true,
+            
+            // User properties for better segmentation
+            user_properties: {
+                user_type: Analytics.getUserType(),
+                device_type: Analytics.getDeviceType()
+            },
+            
+            // Custom parameters for advanced analysis
+            custom_parameters: {
+                page_type: 'order_lookup',
+                feature_set: 'enhanced'
+            }
+        });
+
+        // Additional Advanced Analytics Features
+        const AdvancedAnalytics = {
+            // Conversion tracking
+            trackConversion: function(conversionType, value, currency = 'INR') {
+                gtag('event', 'conversion', {
+                    send_to: 'G-2PRMZL2Z5X',
+                    value: value,
+                    currency: currency,
+                    transaction_id: this.generateTransactionId(),
+                    custom_parameters: {
+                        conversion_type: conversionType,
+                        user_type: Analytics.getUserType(),
+                        device_type: Analytics.getDeviceType()
+                    }
+                });
+            },
+
+            // A/B Testing support
+            trackExperiment: function(experimentId, variant, success) {
+                gtag('event', 'experiment_impression', {
+                    experiment_id: experimentId,
+                    variant: variant,
+                    success: success,
+                    custom_parameters: {
+                        user_type: Analytics.getUserType(),
+                        device_type: Analytics.getDeviceType()
+                    }
+                });
+            },
+
+            // Enhanced user behavior tracking
+            trackUserJourney: function(step, details) {
+                gtag('event', 'user_journey', {
+                    event_category: 'User Flow',
+                    event_label: step,
+                    custom_parameters: {
+                        step: step,
+                        details: details,
+                        user_type: Analytics.getUserType(),
+                        device_type: Analytics.getDeviceType(),
+                        session_duration: Analytics.getSessionDuration(),
+                        page_url: window.location.href
+                    }
+                });
+            },
+
+            // Real-time user behavior
+            trackRealTimeBehavior: function(action, element, value) {
+                gtag('event', 'real_time_behavior', {
+                    event_category: 'User Behavior',
+                    event_label: action,
+                    custom_parameters: {
+                        action: action,
+                        element: element,
+                        value: value,
+                        timestamp: Date.now(),
+                        user_type: Analytics.getUserType(),
+                        device_type: Analytics.getDeviceType()
+                    }
+                });
+            },
+
+            // Enhanced error tracking with context
+            trackDetailedError: function(errorType, errorMessage, context) {
+                gtag('event', 'detailed_error', {
+                    event_category: 'System Error',
+                    event_label: errorType,
+                    custom_parameters: {
+                        error_type: errorType,
+                        error_message: errorMessage,
+                        context: context,
+                        user_type: Analytics.getUserType(),
+                        device_type: Analytics.getDeviceType(),
+                        page_url: window.location.href,
+                        user_agent: navigator.userAgent,
+                        timestamp: Date.now()
+                    }
+                });
+            },
+
+            // Performance monitoring with thresholds
+            trackPerformanceWithThresholds: function(metric, value, threshold) {
+                const status = value <= threshold ? 'good' : 'poor';
+                gtag('event', 'performance_threshold', {
+                    event_category: 'Performance',
+                    event_label: metric,
+                    value: value,
+                    custom_parameters: {
+                        metric: metric,
+                        value: value,
+                        threshold: threshold,
+                        status: status,
+                        user_type: Analytics.getUserType(),
+                        device_type: Analytics.getDeviceType()
+                    }
+                });
+            },
+
+            // User satisfaction tracking
+            trackUserSatisfaction: function(satisfactionLevel, reason) {
+                gtag('event', 'user_satisfaction', {
+                    event_category: 'User Experience',
+                    event_label: satisfactionLevel,
+                    value: satisfactionLevel,
+                    custom_parameters: {
+                        satisfaction_level: satisfactionLevel,
+                        reason: reason,
+                        user_type: Analytics.getUserType(),
+                        device_type: Analytics.getDeviceType(),
+                        session_duration: Analytics.getSessionDuration()
+                    }
+                });
+            },
+
+            // Feature adoption tracking
+            trackFeatureAdoption: function(feature, adoptionType) {
+                gtag('event', 'feature_adoption', {
+                    event_category: 'Feature Analytics',
+                    event_label: feature,
+                    custom_parameters: {
+                        feature: feature,
+                        adoption_type: adoptionType,
+                        user_type: Analytics.getUserType(),
+                        device_type: Analytics.getDeviceType(),
+                        session_count: sessionStorage.getItem('session_count') || 0
+                    }
+                });
+            },
+
+            // Generate unique transaction ID
+            generateTransactionId: function() {
+                return 'txn_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            },
+
+            // Track scroll depth
+            trackScrollDepth: function() {
+                let maxScroll = 0;
+                let scrollTracking = false;
+
+                window.addEventListener('scroll', function() {
+                    if (!scrollTracking) {
+                        scrollTracking = true;
+                        setTimeout(function() {
+                            const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+                            if (scrollPercent > maxScroll) {
+                                maxScroll = scrollPercent;
+                                if (maxScroll % 25 === 0) { // Track every 25%
+                                    gtag('event', 'scroll_depth', {
+                                        event_category: 'User Engagement',
+                                        event_label: maxScroll + '%',
+                                        value: maxScroll,
+                                        custom_parameters: {
+                                            scroll_depth: maxScroll,
+                                            user_type: Analytics.getUserType(),
+                                            device_type: Analytics.getDeviceType()
+                                        }
+                                    });
+                                }
+                            }
+                            scrollTracking = false;
+                        }, 100);
+                    }
+                });
+            },
+
+            // Track time on page
+            trackTimeOnPage: function() {
+                const startTime = Date.now();
+                window.addEventListener('beforeunload', function() {
+                    const timeOnPage = Math.round((Date.now() - startTime) / 1000);
+                    gtag('event', 'time_on_page', {
+                        event_category: 'User Engagement',
+                        value: timeOnPage,
+                        custom_parameters: {
+                            time_on_page: timeOnPage,
+                            user_type: Analytics.getUserType(),
+                            device_type: Analytics.getDeviceType()
+                        }
+                    });
+                });
+            },
+
+            // Track form interactions
+            trackFormInteractions: function() {
+                const forms = document.querySelectorAll('form');
+                forms.forEach(form => {
+                    form.addEventListener('submit', function() {
+                        gtag('event', 'form_submit', {
+                            event_category: 'Form Interaction',
+                            event_label: form.id || 'unknown_form',
+                            custom_parameters: {
+                                form_id: form.id || 'unknown_form',
+                                user_type: Analytics.getUserType(),
+                                device_type: Analytics.getDeviceType()
+                            }
+                        });
+                    });
+                });
+            }
+        };
+
+        // Initialize advanced analytics features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize scroll depth tracking
+            AdvancedAnalytics.trackScrollDepth();
+            
+            // Initialize time on page tracking
+            AdvancedAnalytics.trackTimeOnPage();
+            
+            // Initialize form interaction tracking
+            AdvancedAnalytics.trackFormInteractions();
+            
+            // Track user journey start
+            AdvancedAnalytics.trackUserJourney('page_load', {
+                referrer: document.referrer,
+                landing_page: window.location.href
+            });
+        });
+
+        // Enhanced search tracking with conversion
+        const enhancedSearchNow = function(event) {
+            event.preventDefault();
+            
+            const type = document.getElementById("searchType").value;
+            const value = document.getElementById("searchValue").value.trim();
+            
+            // Track search attempt with enhanced details
+            AdvancedAnalytics.trackRealTimeBehavior('search_attempt', 'search_form', {
+                type: type,
+                value_length: value.length,
+                has_value: value.length > 0
+            });
+            
+            // Track user journey
+            AdvancedAnalytics.trackUserJourney('search_initiated', {
+                search_type: type,
+                value_length: value.length
+            });
+            
+            // Call original search function
+            originalSearchNow(event);
+        };
+
+        // Replace the search function with enhanced version
+        window.searchNow = enhancedSearchNow;
+
+        // Enhanced results tracking
+        const enhancedDisplayResults = function(results) {
+            // Track successful results display
+            if (results && results.length > 0) {
+                AdvancedAnalytics.trackConversion('search_success', results.length);
+                AdvancedAnalytics.trackUserJourney('results_found', {
+                    count: results.length,
+                    search_type: document.getElementById("searchType").value
+                });
+            } else {
+                AdvancedAnalytics.trackUserJourney('no_results', {
+                    search_type: document.getElementById("searchType").value
+                });
+            }
+            
+            // Call original display function
+            originalDisplayResults(results);
+        };
+
+        // Replace the display function with enhanced version
+        window.displayResults = enhancedDisplayResults;
+
+        // Enhanced export tracking with conversion
+        const enhancedExportToPDF = function() {
+            AdvancedAnalytics.trackConversion('export_pdf', currentResults.length);
+            AdvancedAnalytics.trackFeatureAdoption('pdf_export', 'used');
+            originalExportToPDF();
+        };
+
+        const enhancedExportToExcel = function() {
+            AdvancedAnalytics.trackConversion('export_excel', currentResults.length);
+            AdvancedAnalytics.trackFeatureAdoption('excel_export', 'used');
+            originalExportToExcel();
+        };
+
+        // Replace export functions with enhanced versions
+        window.exportToPDF = enhancedExportToPDF;
+        window.exportToExcel = enhancedExportToExcel;
+
+        // Performance monitoring with thresholds
+        window.addEventListener('load', function() {
+            // Track page load performance with thresholds
+            if (window.performance && window.performance.timing) {
+                const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+                AdvancedAnalytics.trackPerformanceWithThresholds('page_load_time', loadTime, 3000); // 3 second threshold
+            }
+
+            // Track Core Web Vitals with thresholds
+            if ('PerformanceObserver' in window) {
+                // LCP threshold: 2.5 seconds
+                new PerformanceObserver((list) => {
+                    const entries = list.getEntries();
+                    const lastEntry = entries[entries.length - 1];
+                    AdvancedAnalytics.trackPerformanceWithThresholds('lcp', lastEntry.startTime, 2500);
+                }).observe({ entryTypes: ['largest-contentful-paint'] });
+
+                // FID threshold: 100ms
+                new PerformanceObserver((list) => {
+                    const entries = list.getEntries();
+                    entries.forEach((entry) => {
+                        const fid = entry.processingStart - entry.startTime;
+                        AdvancedAnalytics.trackPerformanceWithThresholds('fid', fid, 100);
+                    });
+                }).observe({ entryTypes: ['first-input'] });
+
+                // CLS threshold: 0.1
+                new PerformanceObserver((list) => {
+                    let cls = 0;
+                    const entries = list.getEntries();
+                    entries.forEach((entry) => {
+                        if (!entry.hadRecentInput) {
+                            cls += entry.value;
+                        }
+                    });
+                    AdvancedAnalytics.trackPerformanceWithThresholds('cls', cls, 0.1);
+                }).observe({ entryTypes: ['layout-shift'] });
+            }
+        });
+
+        // Enhanced error tracking
+        window.addEventListener('error', function(event) {
+            AdvancedAnalytics.trackDetailedError('javascript_error', event.message, {
+                filename: event.filename,
+                lineno: event.lineno,
+                colno: event.colno,
+                error: event.error
+            });
+        });
+
+        window.addEventListener('unhandledrejection', function(event) {
+            AdvancedAnalytics.trackDetailedError('promise_rejection', event.reason, {
+                promise: event.promise
+            });
+        });
+
+        // Track user satisfaction (example: after successful search)
+        function trackSearchSatisfaction(success, reason) {
+            const satisfactionLevel = success ? 5 : 2; // 1-5 scale
+            AdvancedAnalytics.trackUserSatisfaction(satisfactionLevel, reason);
+        }
+
+        // Make satisfaction tracking available globally
+        window.trackSearchSatisfaction = trackSearchSatisfaction;
+    </script>
+  </body>
 </html>
