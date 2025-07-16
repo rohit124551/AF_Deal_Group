@@ -1,4 +1,4 @@
-const CACHE_NAME = 'af-portal-cache-v7';
+const CACHE_NAME = 'af-portal-cache-v8';
 const urlsToCache = [
   '/paid_portal/index.html',
   '/paid_portal/pending.html',
