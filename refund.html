@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order ID Lookup Interface</title>
+    <style>
+      :root {
+        --bg-main: #f4f4f4;
+        --bg-gradient: linear-gradient(120deg, #f4f4f4 60%, #e3f0ff 100%);
+        --text-main: #333;
+        --header: #0056b3;
+        --header-shadow: #e3f0ff;
+        --input-bg: #fff;
+        --input-border: #cfd8dc;
+        --input-focus: #007bff;
+        --input-shadow: #b3d7ff;
+        --btn-bg: linear-gradient(90deg, #007bff 60%, #0056b3 100%);
+        --btn-bg-hover: linear-gradient(90deg, #0056b3 60%, #007bff 100%);
+        --btn-shadow: 0 2px 8px rgba(0,123,255,0.08);
+        --btn-text: #fff;
+        --clear-bg: #f8d7da;
+        --clear-bg-hover: #f5c6cb;
+        --clear-text: #b30000;
+        --clear-shadow: 0 2px 8px rgba(179,0,0,0.06);
+        --card-bg: #fff;
+        --card-border: #e3f0ff;
+        --card-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        --entry-bg: #f7faff;
+        --entry-shadow: 0 1px 4px rgba(0,123,255,0.04);
+        --entry-bg-hover: #e3f0ff;
+        --error-bg: #ffe6e6;
+        --error-text: #b30000;
+        --error-border: #f5c6cb;
+        --success-bg: #e6ffe6;
+        --success-text: #006600;
+        --success-border: #b3ffb3;
+        --rf-border: #007bff;
+        --re-border: #ff9800;
+        --skeleton-box-bg: #f2f6fa;
+        --skeleton-entry-bg: #e3eaf1;
+        --skeleton-anim-bg: #f7faff;
+        /* Utility variables */
+        --spacing-xs: 6px;
+        --spacing-s: 12px;
+        --spacing-m: 18px;
+        --spacing-l: 24px;
+        --radius: 8px;
+        --font-main: 'Segoe UI', Arial, sans-serif;
+        --font-size-base: 1.1rem;
+        --font-size-lg: 2.2rem;
+      }
+      body.dark {
+        --bg-main: #181c1f;
+        --bg-gradient: linear-gradient(120deg, #23272b 60%, #181c1f 100%);
+        --text-main: #e3eaf1;
+        --header: #7bb6ff;
+        --header-shadow: #23272b;
+        --input-bg: #23272b;
+        --input-border: #3a4250;
+        --input-focus: #7bb6ff;
+        --input-shadow: #2a3a4d;
+        --btn-bg: linear-gradient(90deg, #1e90ff 60%, #0056b3 100%);
+        --btn-bg-hover: linear-gradient(90deg, #0056b3 60%, #1e90ff 100%);
+        --btn-shadow: 0 2px 8px rgba(30,144,255,0.10);
+        --btn-text: #fff;
+        --clear-bg: #3a4250;
+        --clear-bg-hover: #23272b;
+        --clear-text: #ffb3b3;
+        --clear-shadow: 0 2px 8px rgba(255,179,179,0.06);
+        --card-bg: #23272b;
+        --card-border: #2a3a4d;
+        --card-shadow: 0 4px 18px rgba(0,0,0,0.18);
+        --entry-bg: #23272b;
+        --entry-shadow: 0 1px 4px rgba(30,144,255,0.10);
+        --entry-bg-hover: #2a3a4d;
+        --error-bg: #3a1a1a;
+        --error-text: #ffb3b3;
+        --error-border: #b30000;
+        --success-bg: #1a3a1a;
+        --success-text: #b3ffb3;
+        --success-border: #006600;
+        --rf-border: #7bb6ff;
+        --re-border: #ffb366;
+        --skeleton-box-bg: #23272b;
+        --skeleton-entry-bg: #2a3a4d;
+        --skeleton-anim-bg: #23272b;
+      }
+      body {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        padding: 40px;
+        background: var(--bg-gradient);
+        color: var(--text-main);
+        max-width: 700px;
+        margin: auto;
+        box-sizing: border-box;
+        min-height: 100vh;
+        overflow-x: hidden;
+        transition: background 0.4s, color 0.4s;
+      }
+      h2 {
+        font-size: 2.2rem;
+        text-align: center;
+        margin-bottom: 10px;
+        color: var(--header);
+        letter-spacing: 1px;
+        text-shadow: 0 2px 8px var(--header-shadow);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      p {
+        text-align: center;
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+        color: var(--text-main);
+      }
+      input, button {
+        padding: 14px;
+        font-size: 1.1rem;
+        margin-top: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        border-radius: 8px;
+        border: 1px solid var(--input-border);
+        background: var(--input-bg);
+        color: var(--text-main);
+        transition: box-shadow 0.2s, border 0.2s, background 0.4s, color 0.4s;
+      }
+      input:focus {
+        outline: none;
+        border: 1.5px solid var(--input-focus);
+        box-shadow: 0 0 0 2px var(--input-shadow);
+      }
+      button {
+        background: var(--btn-bg);
+        color: var(--btn-text);
+        border: none;
+        cursor: pointer;
+        margin-top: 15px;
+        font-weight: 600;
+        box-shadow: var(--btn-shadow);
+        transition: background 0.2s, transform 0.1s, color 0.4s;
+      }
+      button:hover {
+        background: var(--btn-bg-hover);
+        transform: translateY(-2px) scale(1.02);
+      }
+      .clear-btn {
+        background: var(--clear-bg);
+        color: var(--clear-text);
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        margin-top: 10px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 1.1rem;
+        font-weight: 600;
+        box-shadow: var(--clear-shadow);
+        transition: background 0.2s, transform 0.1s, color 0.4s;
+      }
+      .clear-btn:hover {
+        background: var(--clear-bg-hover);
+        transform: translateY(-2px) scale(1.01);
+      }
+      .spinner {
+        display: none;
+        margin: 24px auto 0 auto;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #007bff;
+        border-radius: 50%;
+        width: 38px;
+        height: 38px;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .result-box {
+        background: var(--card-bg);
+        margin-top: 24px;
+        padding: 24px 22px 18px 22px;
+        border-radius: 14px;
+        box-shadow: var(--card-shadow);
+        white-space: pre-line;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.4s, transform 0.4s, background 0.4s, color 0.4s;
+        border: 1.5px solid var(--card-border);
+        max-width: 100vw;
+      }
+      .result-box[style*="display: block"] {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+      }
+      .box-title {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+        color: var(--header);
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        transition: color 0.4s;
+      }
+      #errorBox {
+        background: var(--error-bg) !important;
+        color: var(--error-text) !important;
+        border: 1.5px solid var(--error-border) !important;
+        font-weight: 500;
+        font-size: 1.08rem;
+        transition: background 0.4s, color 0.4s, border 0.4s;
+      }
+      #successBox {
+        background: var(--success-bg) !important;
+        color: var(--success-text) !important;
+        border: 1.5px solid var(--success-border) !important;
+        font-weight: 500;
+        font-size: 1.08rem;
+        transition: background 0.4s, color 0.4s, border 0.4s;
+      }
+      #rfResult, #reResult {
+        border-left: 5px solid var(--rf-border);
+        transition: border-color 0.4s;
+      }
+      #reResult {
+        border-left: 5px solid var(--re-border);
+      }
+      .entry-block {
+        background: var(--entry-bg);
+        border-radius: 8px;
+        margin-bottom: 18px;
+        padding: 14px 14px 10px 14px;
+        box-shadow: var(--entry-shadow);
+        transition: box-shadow 0.2s, background 0.4s;
+        max-width: 100vw;
+        color: var(--text-main);
+      }
+      .entry-block:hover {
+        box-shadow: 0 4px 16px rgba(0,123,255,0.10);
+        background: var(--entry-bg-hover);
+      }
+      .skeleton-box {
+        background: var(--skeleton-box-bg);
+        border-radius: 14px;
+        margin-top: 24px;
+        padding: 24px 22px 18px 22px;
+        box-shadow: var(--card-shadow);
+        border: 1.5px solid var(--card-border);
+        max-width: 100vw;
+        transition: background 0.4s, border 0.4s;
+      }
+      .skeleton-entry {
+        background: var(--skeleton-entry-bg);
+        border-radius: 8px;
+        margin-bottom: 18px;
+        padding: 14px 14px 10px 14px;
+        box-shadow: var(--entry-shadow);
+        position: relative;
+        overflow: hidden;
+        transition: background 0.4s;
+      }
+      .skeleton-animate {
+        animation: skeleton-loading 1.2s infinite linear alternate;
+      }
+      @keyframes skeleton-loading {
+        0% { background-color: var(--skeleton-entry-bg); }
+        100% { background-color: var(--skeleton-anim-bg); }
+      }
+      .skeleton-line {
+        height: 16px;
+        width: 80%;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        background: var(--skeleton-entry-bg);
+        transition: background 0.4s;
+      }
+      .skeleton-line.short { width: 40%; }
+      .skeleton-line.medium { width: 60%; }
+      .skeleton-line.tiny { width: 25%; }
+      .loading-message {
+        text-align: center;
+        font-size: 1.1rem;
+        color: var(--header);
+        margin-top: 24px;
+        margin-bottom: 0;
+        opacity: 0;
+        transition: opacity 0.4s;
+        min-height: 28px;
+        letter-spacing: 0.5px;
+        font-weight: 500;
+        user-select: none;
+      }
+      .loading-message.visible {
+        opacity: 1;
+      }
+      .skeleton-fade {
+        opacity: 0;
+        transition: opacity 0.4s;
+      }
+      .skeleton-fade.visible {
+        opacity: 1;
+      }
+      .result-skeleton {
+        display: none;
+        transition: opacity 0.4s;
+        opacity: 0;
+      }
+      .result-skeleton.visible {
+        display: block;
+        opacity: 1;
+      }
+      /* Utility classes */
+      .padded { padding: var(--spacing-m); }
+      .rounded { border-radius: var(--radius); }
+      .text-center { text-align: center; }
+      .font-bold { font-weight: bold; }
+      .focus-outline:focus {
+        outline: 2px solid var(--input-focus);
+        outline-offset: 2px;
+      }
+      @media (max-width: 600px) {
+        body {
+          padding: 4vw 2vw 4vw 2vw;
+          min-width: 0;
+        }
+        .result-box {
+          padding: 10px 2vw 8px 2vw;
+          border-radius: 8px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        .entry-block {
+          padding: 10px 2vw 8px 2vw;
+          border-radius: 6px;
+        }
+        h2 {
+          font-size: 1.3rem;
+        }
+        .box-title {
+          font-size: 1rem;
+        }
+        input, button, .clear-btn {
+          font-size: 1rem;
+          padding: 10px;
+          border-radius: 6px;
+        }
+        #rfResult, #reResult {
+          border-left-width: 3px;
+        }
+        #errorBox, #successBox {
+          font-size: 0.98rem;
+        }
+        .spinner {
+          width: 28px;
+          height: 28px;
+        }
+        .skeleton-box {
+          padding: 10px 2vw 8px 2vw;
+          border-radius: 8px;
+        }
+        .skeleton-entry {
+          padding: 10px 2vw 8px 2vw;
+          border-radius: 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class=main-nav>
+<a href="index.html" class="nav-link" title="Home"><span class=nav-icon>🏠</span><span class=nav-label>Home</span></a>
+<a href="pending.html" class="nav-link" title="Pending Order Forms"><span class=nav-icon>⏳</span><span class=nav-label>Pending</span></a>
+<a href="refund.html" class="nav-link active" title="Refund Form Filled Status"><span class=nav-icon>🔍</span><span class=nav-label>Refund</span></a>
+<a href="paid.html" class="nav-link" title="Paid Payments"><span class=nav-icon>✅</span><span class=nav-label>Paid</span></a>
+</nav>
+<style>.main-nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:18px;background:rgba(255,255,255,.85);box-shadow:0 2px 16px 0 #764ba222;z-index:1001;padding:10px 0 6px 0;backdrop-filter:blur(8px) saturate(1.2)}.nav-link{display:flex;align-items:center;gap:7px;font-size:1.08rem;font-weight:600;color:#764ba2;text-decoration:none;padding:7px 18px;border-radius:12px;transition:background .2s,color .2s,box-shadow .2s;position:relative}.nav-link .nav-icon{font-size:1.2em}.nav-link.active,.nav-link:hover{background:linear-gradient(90deg,#f3e8ff 0,#e9d8fd 100%);color:#4a5568;box-shadow:0 2px 8px #764ba222}@media (max-width:600px){.main-nav{gap:6px;padding:7px 0 3px 0}.nav-link{font-size:.98rem;padding:6px 10px;gap:4px}.nav-link .nav-label{display:none}}</style>
+<div style="height:54px"></div>
+
+    <h2>🔍 Refund form filled status Tool
+      <button id="darkModeToggle" aria-label="Toggle dark mode" style="width:40px;height:40px;border-radius:50%;border:none;background:none;font-size:1.5rem;cursor:pointer;transition:background 0.3s;outline:none;">
+        🌙
+      </button>
+    </h2>
+    <p>This tool checks whether the refund form has been filled for a given Order ID. Enter an Order ID to verify its refund form status.</p>
+
+    <input type="text" id="orderId" placeholder="Enter Order ID" aria-label="Order ID" />
+    <button onclick="searchOrder()" id="searchBtn" aria-label="Search for Order ID">Search</button>
+    <button onclick="clearForm()" class="clear-btn" id="clearBtn" aria-label="Clear search and results" style="display:none;">Clear</button>
+    <div class="spinner" id="spinner" aria-live="polite" aria-label="Loading"></div>
+    <div id="loadingMessage" class="loading-message" style="display:none;">Searching for Order ID<span id="loadingDots"></span></div>
+
+    <div id="rfResult" class="result-box" style="display:none;">
+      <div class="box-title">📘 Refund Form Results <span id="rfCount"></span></div>
+      <div id="rfSkeleton" class="result-skeleton">
+        <div class="skeleton-entry skeleton-animate">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line medium"></div>
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line"></div>
+        </div>
+      </div>
+      <div id="rfContent"></div>
+    </div>
+
+    <div id="reResult" class="result-box" style="display:none;">
+      <div class="box-title">📙 Re Refund Form Results <span id="reCount"></span></div>
+      <div id="reSkeleton" class="result-skeleton">
+        <div class="skeleton-entry skeleton-animate">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line medium"></div>
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line"></div>
+        </div>
+      </div>
+      <div id="reContent"></div>
+    </div>
+
+    <div id="errorBox" class="result-box" style="display:none; background:#ffe6e6; color:#b30000;"></div>
+    <div id="successBox" class="result-box" style="display:none; background:#e6ffe6; color:#006600;"></div>
+    <div id="ariaLive" aria-live="polite" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;"></div>
+    <script>
+      // Dark mode logic
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      function setDarkMode(on, save) {
+        if (on) {
+          document.body.classList.add('dark');
+          darkModeToggle.innerHTML = '☀️';
+        } else {
+          document.body.classList.remove('dark');
+          darkModeToggle.innerHTML = '🌙';
+        }
+        if (save) localStorage.setItem('darkMode', on ? '1' : '0');
+      }
+      // On load, set mode from localStorage or system
+      (function() {
+        const saved = localStorage.getItem('darkMode');
+        if (saved === '1' || (saved === null && prefersDark)) setDarkMode(true, false);
+        else setDarkMode(false, false);
+      })();
+      darkModeToggle.onclick = function() {
+        setDarkMode(!document.body.classList.contains('dark'), true);
+      };
+
+      const deploymentUrl = "https://script.google.com/macros/s/AKfycbyo1oFQpd8axWiY5sFEJBRJxXp8UN31YjhFoCeNa_THSGSG0smU1pS-H0IdxsV4V95k/exec"; // ⛔ Replace this with your real URL
+
+      function showSpinner(show) {
+        document.getElementById("spinner").style.display = show ? "block" : "none";
+      }
+      function showResultSkeletons(show) {
+        const rfSkeleton = document.getElementById('rfSkeleton');
+        const reSkeleton = document.getElementById('reSkeleton');
+        if (show) {
+          rfSkeleton.classList.add('visible');
+          reSkeleton.classList.add('visible');
+        } else {
+          rfSkeleton.classList.remove('visible');
+          reSkeleton.classList.remove('visible');
+        }
+      }
+
+      // Loading message with animated ellipsis
+      let loadingDotsInterval = null;
+      function showLoadingMessage(show) {
+        const msg = document.getElementById('loadingMessage');
+        if (show) {
+          msg.style.display = 'block';
+          setTimeout(() => msg.classList.add('visible'), 10);
+          let dots = 0;
+          loadingDotsInterval = setInterval(() => {
+            dots = (dots + 1) % 4;
+            document.getElementById('loadingDots').textContent = '.'.repeat(dots);
+          }, 400);
+        } else {
+          msg.classList.remove('visible');
+          setTimeout(() => { msg.style.display = 'none'; }, 400);
+          clearInterval(loadingDotsInterval);
+          document.getElementById('loadingDots').textContent = '';
+        }
+      }
+      // Debounce function
+      function debounce(fn, delay) {
+        let timer;
+        return function(...args) {
+          clearTimeout(timer);
+          timer = setTimeout(() => fn.apply(this, args), delay);
+        };
+      }
+      function setLoadingState(isLoading) {
+        document.getElementById('orderId').disabled = isLoading;
+        document.getElementById('searchBtn').disabled = isLoading;
+        document.getElementById('clearBtn').disabled = isLoading;
+        document.getElementById('searchBtn').innerText = isLoading ? "Searching..." : "Search";
+      }
+
+      function clearForm() {
+        document.getElementById("orderId").value = "";
+        document.getElementById("rfContent").innerText = "";
+        document.getElementById("reContent").innerText = "";
+        document.getElementById("rfResult").style.display = "none";
+        document.getElementById("reResult").style.display = "none";
+        document.getElementById("errorBox").style.display = "none";
+        document.getElementById("successBox").style.display = "none";
+        document.getElementById("clearBtn").style.display = "none";
+        document.getElementById("rfCount").innerText = "";
+        document.getElementById("reCount").innerText = "";
+        document.getElementById("orderId").focus();
+        showResultSkeletons(false);
+        showSpinner(false);
+        showLoadingMessage(false);
+        setLoadingState(false);
+      }
+
+      function showSuccess(msg) {
+        const box = document.getElementById("successBox");
+        box.innerText = msg;
+        box.style.display = "block";
+        document.getElementById("ariaLive").textContent = msg;
+      }
+
+      function showError(msg) {
+        const box = document.getElementById("errorBox");
+        box.innerText = msg;
+        box.style.display = "block";
+        document.getElementById("ariaLive").textContent = msg;
+      }
+
+      function displayResults(data) {
+        let hasAny = false;
+        document.getElementById("rfContent").innerHTML = "";
+        document.getElementById("reContent").innerHTML = "";
+        document.getElementById("rfCount").innerText = "";
+        document.getElementById("reCount").innerText = "";
+        if (data.rfEntries && data.rfEntries.length > 0) {
+          document.getElementById("rfResult").style.display = "block";
+          hasAny = true;
+          document.getElementById("rfCount").innerText = `(${data.rfEntries.length} found)`;
+          let rfHtml = "";
+          data.rfEntries.forEach((entry, index) => {
+            rfHtml += `<div class='entry-block'>`;
+            rfHtml += `🔹 <b>Entry ${index + 1}</b><br>`;
+            rfHtml += `📅 <b>Timestamp:</b> ${entry.timestamp}<br>`;
+            rfHtml += `🆔 <b>Order ID:</b> ${entry.orderId}<br>`;
+            rfHtml += `📝 <b>Remarks:</b> ${entry.remarks}`;
+            rfHtml += `</div>`;
+          });
+          document.getElementById("rfContent").innerHTML = rfHtml;
+        } else {
+          document.getElementById("rfResult").style.display = "none";
+        }
+        if (data.reEntries && data.reEntries.length > 0) {
+          document.getElementById("reResult").style.display = "block";
+          hasAny = true;
+          document.getElementById("reCount").innerText = `(${data.reEntries.length} found)`;
+          let reHtml = "";
+          data.reEntries.forEach((entry, index) => {
+            reHtml += `<div class='entry-block'>`;
+            reHtml += `🔹 <b>Entry ${index + 1}</b><br>`;
+            reHtml += `📅 <b>Timestamp:</b> ${entry.timestamp}<br>`;
+            reHtml += `🆔 <b>Order ID:</b> ${entry.orderId}<br>`;
+            reHtml += `📝 <b>Remarks:</b> ${entry.remarks}`;
+            reHtml += `</div>`;
+          });
+          document.getElementById("reContent").innerHTML = reHtml;
+        } else {
+          document.getElementById("reResult").style.display = "none";
+        }
+        if (!hasAny) {
+          showError("❌ Refund form not filled in either sheet.");
+        }
+      }
+      async function searchOrder() {
+        const orderId = document.getElementById("orderId").value.trim();
+        document.getElementById("rfContent").innerText = "";
+        document.getElementById("reContent").innerText = "";
+        document.getElementById("rfResult").style.display = "none";
+        document.getElementById("reResult").style.display = "none";
+        document.getElementById("rfCount").innerText = "";
+        document.getElementById("reCount").innerText = "";
+        errorBox.style.display = "none";
+        successBox.style.display = "none";
+        document.getElementById("orderId").focus();
+
+        if (!orderId) {
+          showError("⚠️ Please enter an Order ID.");
+          return;
+        }
+
+        showSpinner(false);
+        showLoadingMessage(true);
+        showResultSkeletons(false);
+        setLoadingState(true);
+        document.getElementById("clearBtn").style.display = "none";
+
+        try {
+          const res = await fetch(`${deploymentUrl}?orderId=${encodeURIComponent(orderId)}`);
+          const data = await res.json();
+          showResultSkeletons(false);
+          showSpinner(false);
+          showLoadingMessage(false);
+          setLoadingState(false);
+          document.getElementById("clearBtn").style.display = "block";
+          displayResults(data);
+        } catch (error) {
+          showResultSkeletons(false);
+          showSpinner(false);
+          showLoadingMessage(false);
+          setLoadingState(false);
+          showError(`❌ Error fetching data.\n${error.message || error}`);
+        }
+      }
+
+      // Keyboard Enter triggers search (debounced)
+      document.getElementById("orderId").addEventListener("keydown", debounce(function(e) {
+        if (e.key === "Enter") {
+          document.getElementById("searchBtn").click();
+        }
+      }, 300));
+      // Autofocus input on load
+      window.onload = function() {
+        document.getElementById("orderId").focus();
+      };
+    </script>
+  </body>
+</html>
