@@ -12,12 +12,102 @@
     <link rel=icon type=image/png sizes=512x512 href=favicon_io/android-chrome-512x512.png>
     <link rel="shortcut icon" href=favicon_io/favicon.ico>
     <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        --bg-main: #f4f4f4;
+        --bg-gradient: linear-gradient(120deg, #f4f4f4 60%, #e3f0ff 100%);
+        --text-main: #333;
+        --header: #0056b3;
+        --header-shadow: #e3f0ff;
+        --input-bg: #fff;
+        --input-border: #cfd8dc;
+        --input-focus: #007bff;
+        --input-shadow: #b3d7ff;
+        --btn-bg: linear-gradient(90deg, #007bff 60%, #0056b3 100%);
+        --btn-bg-hover: linear-gradient(90deg, #0056b3 60%, #007bff 100%);
+        --btn-shadow: 0 2px 8px rgba(0,123,255,0.08);
+        --btn-text: #fff;
+        --clear-bg: #f8d7da;
+        --clear-bg-hover: #f5c6cb;
+        --clear-text: #b30000;
+        --clear-shadow: 0 2px 8px rgba(179,0,0,0.06);
+        --card-bg: #fff;
+        --card-border: #e3f0ff;
+        --card-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        --entry-bg: #f7faff;
+        --entry-shadow: 0 1px 4px rgba(0,123,255,0.04);
+        --entry-bg-hover: #e3f0ff;
+        --error-bg: #ffe6e6;
+        --error-text: #b30000;
+        --error-border: #f5c6cb;
+        --success-bg: #e6ffe6;
+        --success-text: #006600;
+        --success-border: #b3ffb3;
+        --rf-border: #007bff;
+        --re-border: #ff9800;
+        --skeleton-box-bg: #f2f6fa;
+        --skeleton-entry-bg: #e3eaf1;
+        --skeleton-anim-bg: #f7faff;
+        /* Utility variables */
+        --spacing-xs: 6px;
+        --spacing-s: 12px;
+        --spacing-m: 18px;
+        --spacing-l: 24px;
+        --radius: 8px;
+        --font-main: 'Segoe UI', Arial, sans-serif;
+        --font-size-base: 1.1rem;
+        --font-size-lg: 2.2rem;
+      }
+      body.dark {
+        --bg-main: #181c1f;
+        --bg-gradient: linear-gradient(120deg, #23272b 60%, #181c1f 100%);
+        --text-main: #e3eaf1;
+        --header: #7bb6ff;
+        --header-shadow: #23272b;
+        --input-bg: #23272b;
+        --input-border: #3a4250;
+        --input-focus: #7bb6ff;
+        --input-shadow: #2a3a4d;
+        --btn-bg: linear-gradient(90deg, #1e90ff 60%, #0056b3 100%);
+        --btn-bg-hover: linear-gradient(90deg, #0056b3 60%, #1e90ff 100%);
+        --btn-shadow: 0 2px 8px rgba(30,144,255,0.10);
+        --btn-text: #fff;
+        --clear-bg: #3a4250;
+        --clear-bg-hover: #23272b;
+        --clear-text: #ffb3b3;
+        --clear-shadow: 0 2px 8px rgba(255,179,179,0.06);
+        --card-bg: #23272b;
+        --card-border: #2a3a4d;
+        --card-shadow: 0 4px 18px rgba(0,0,0,0.18);
+        --entry-bg: #23272b;
+        --entry-shadow: 0 1px 4px rgba(30,144,255,0.10);
+        --entry-bg-hover: #2a3a4d;
+        --error-bg: #3a1a1a;
+        --error-text: #ffb3b3;
+        --error-border: #b30000;
+        --success-bg: #1a3a1a;
+        --success-text: #b3ffb3;
+        --success-border: #006600;
+        --rf-border: #7bb6ff;
+        --re-border: #ffb366;
+        --skeleton-box-bg: #23272b;
+        --skeleton-entry-bg: #2a3a4d;
+        --skeleton-anim-bg: #23272b;
+      }
       body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        padding: 40px;
+        background: var(--bg-gradient);
+        color: var(--text-main);
+        max-width: 700px;
+        margin: auto;
+        box-sizing: border-box;
+        min-height: 100vh;
+        overflow-x: hidden;
+        transition: background 0.4s, color 0.4s;
+      }
+      body {
         background: linear-gradient(135deg, #667eea 0, #764ba2 50%, #f093fb 100%);
         min-height: 100vh;
-        display: block;
         position: relative;
       }
       body::before {
@@ -30,6 +120,52 @@
       }
       body.dark {
         background: linear-gradient(135deg, #1a1a2e 0, #16213e 50%, #0f3460 100%);
+      }
+      .container {
+        max-width: 600px;
+        margin: 80px auto 0 auto;
+        background: rgba(255,255,255,0.95);
+        border-radius: 20px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        padding: 40px 30px 30px 30px;
+        text-align: center;
+        position: relative;
+      }
+      @media (max-width: 700px) {
+        .container { margin: 70px 2vw 0 2vw; padding: 20px 2vw 18px 2vw; }
+      }
+      .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        margin: 32px 0 0 0;
+        align-items: center;
+      }
+      #orderId {
+        width: 100%;
+        max-width: 400px;
+        min-width: 0;
+        height: 48px;
+        font-size: 1.1rem;
+        padding: 0 16px;
+        box-sizing: border-box;
+        border-radius: 8px;
+      }
+      #searchBtn, #clearBtn {
+        width: 100%;
+        max-width: 400px;
+        min-width: 120px;
+        height: 48px;
+        font-size: 1.1rem;
+        border-radius: 8px;
+      }
+      @media (max-width: 600px) {
+        #orderId, #searchBtn, #clearBtn {
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
+          font-size: 1rem;
+        }
       }
       h2 {
         font-size: 2.2rem;
@@ -301,56 +437,55 @@
   </head>
   <body>
     <nav class=main-nav>
-<a href="index.html" class="nav-link" title="Home"><span class=nav-icon>🏠</span><span class=nav-label>Home</span></a>
-<a href="pending.html" class="nav-link" title="Pending Order Forms"><span class=nav-icon>⏳</span><span class=nav-label>Pending</span></a>
-<a href="refund.html" class="nav-link active" title="Refund Form Filled Status"><span class=nav-icon>🔍</span><span class=nav-label>Refund</span></a>
-<a href="paid.html" class="nav-link" title="Paid Payments"><span class=nav-icon>✅</span><span class=nav-label>Paid</span></a>
-</nav>
-<style>.main-nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:18px;background:rgba(255,255,255,.85);box-shadow:0 2px 16px 0 #764ba222;z-index:1001;padding:10px 0 6px 0;backdrop-filter:blur(8px) saturate(1.2)}.nav-link{display:flex;align-items:center;gap:7px;font-size:1.08rem;font-weight:600;color:#764ba2;text-decoration:none;padding:7px 18px;border-radius:12px;transition:background .2s,color .2s,box-shadow .2s;position:relative}.nav-link .nav-icon{font-size:1.2em}.nav-link.active,.nav-link:hover{background:linear-gradient(90deg,#f3e8ff 0,#e9d8fd 100%);color:#4a5568;box-shadow:0 2px 8px #764ba222}@media (max-width:600px){.main-nav{gap:6px;padding:7px 0 3px 0}.nav-link{font-size:.98rem;padding:6px 10px;gap:4px}.nav-link .nav-label{display:none}}</style>
-<div style="height:54px"></div>
-
-    <h2>🔍 Refund form filled status Tool
-      <button id="darkModeToggle" aria-label="Toggle dark mode" style="width:40px;height:40px;border-radius:50%;border:none;background:none;font-size:1.5rem;cursor:pointer;transition:background 0.3s;outline:none;">
-        🌙
-      </button>
-    </h2>
-    <p>This tool checks whether the refund form has been filled for a given Order ID. Enter an Order ID to verify its refund form status.</p>
-
-    <input type="text" id="orderId" placeholder="Enter Order ID" aria-label="Order ID" />
-    <button onclick="searchOrder()" id="searchBtn" aria-label="Search for Order ID">Search</button>
-    <button onclick="clearForm()" class="clear-btn" id="clearBtn" aria-label="Clear search and results" style="display:none;">Clear</button>
-    <div class="spinner" id="spinner" aria-live="polite" aria-label="Loading"></div>
-    <div id="loadingMessage" class="loading-message" style="display:none;">Searching for Order ID<span id="loadingDots"></span></div>
-
-    <div id="rfResult" class="result-box" style="display:none;">
-      <div class="box-title">📘 Refund Form Results <span id="rfCount"></span></div>
-      <div id="rfSkeleton" class="result-skeleton">
-        <div class="skeleton-entry skeleton-animate">
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line medium"></div>
-          <div class="skeleton-line short"></div>
-          <div class="skeleton-line"></div>
-        </div>
+      <a href="index.html" class="nav-link" title="Home"><span class=nav-icon>🏠</span><span class=nav-label>Home</span></a>
+      <a href="pending.html" class="nav-link" title="Pending Order Forms"><span class=nav-icon>⏳</span><span class=nav-label>Pending</span></a>
+      <a href="refund.html" class="nav-link active" title="Refund Form Filled Status"><span class=nav-icon>🔍</span><span class=nav-label>Refund</span></a>
+      <a href="paid.html" class="nav-link" title="Paid Payments"><span class=nav-icon>✅</span><span class=nav-label>Paid</span></a>
+    </nav>
+    <style>.main-nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:18px;background:rgba(255,255,255,.85);box-shadow:0 2px 16px 0 #764ba222;z-index:1001;padding:10px 0 6px 0;backdrop-filter:blur(8px) saturate(1.2)}.nav-link{display:flex;align-items:center;gap:7px;font-size:1.08rem;font-weight:600;color:#764ba2;text-decoration:none;padding:7px 18px;border-radius:12px;transition:background .2s,color .2s,box-shadow .2s;position:relative}.nav-link .nav-icon{font-size:1.2em}.nav-link.active,.nav-link:hover{background:linear-gradient(90deg,#f3e8ff 0,#e9d8fd 100%);color:#4a5568;box-shadow:0 2px 8px #764ba222}@media (max-width:600px){.main-nav{gap:6px;padding:7px 0 3px 0}.nav-link{font-size:.98rem;padding:6px 10px;gap:4px}.nav-link .nav-label{display:none}}</style>
+    <div style="height:54px"></div>
+    <div class="container">
+      <h2>🔍 Refund form filled status Tool
+        <button id="darkModeToggle" aria-label="Toggle dark mode" style="width:40px;height:40px;border-radius:50%;border:none;background:none;font-size:1.5rem;cursor:pointer;transition:background 0.3s;outline:none;">
+          🌙
+        </button>
+      </h2>
+      <p>This tool checks whether the refund form has been filled for a given Order ID. Enter an Order ID to verify its refund form status.</p>
+      <div class="input-group">
+        <input type="text" id="orderId" placeholder="Enter Order ID" aria-label="Order ID" />
+        <button onclick="searchOrder()" id="searchBtn" aria-label="Search for Order ID">Search</button>
+        <button onclick="clearForm()" class="clear-btn" id="clearBtn" aria-label="Clear search and results" style="display:none;">Clear</button>
       </div>
-      <div id="rfContent"></div>
-    </div>
-
-    <div id="reResult" class="result-box" style="display:none;">
-      <div class="box-title">📙 Re Refund Form Results <span id="reCount"></span></div>
-      <div id="reSkeleton" class="result-skeleton">
-        <div class="skeleton-entry skeleton-animate">
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line medium"></div>
-          <div class="skeleton-line short"></div>
-          <div class="skeleton-line"></div>
+      <div class="spinner" id="spinner" aria-live="polite" aria-label="Loading"></div>
+      <div id="loadingMessage" class="loading-message" style="display:none;">Searching for Order ID<span id="loadingDots"></span></div>
+      <div id="rfResult" class="result-box" style="display:none;">
+        <div class="box-title">📘 Refund Form Results <span id="rfCount"></span></div>
+        <div id="rfSkeleton" class="result-skeleton">
+          <div class="skeleton-entry skeleton-animate">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line medium"></div>
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-line"></div>
+          </div>
         </div>
+        <div id="rfContent"></div>
       </div>
-      <div id="reContent"></div>
+      <div id="reResult" class="result-box" style="display:none;">
+        <div class="box-title">📙 Re Refund Form Results <span id="reCount"></span></div>
+        <div id="reSkeleton" class="result-skeleton">
+          <div class="skeleton-entry skeleton-animate">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line medium"></div>
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-line"></div>
+          </div>
+        </div>
+        <div id="reContent"></div>
+      </div>
+      <div id="errorBox" class="result-box" style="display:none; background:#ffe6e6; color:#b30000;"></div>
+      <div id="successBox" class="result-box" style="display:none; background:#e6ffe6; color:#006600;"></div>
+      <div id="ariaLive" aria-live="polite" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;"></div>
     </div>
-
-    <div id="errorBox" class="result-box" style="display:none; background:#ffe6e6; color:#b30000;"></div>
-    <div id="successBox" class="result-box" style="display:none; background:#e6ffe6; color:#006600;"></div>
-    <div id="ariaLive" aria-live="polite" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;"></div>
     <script>
       // Dark mode logic
       const darkModeToggle = document.getElementById('darkModeToggle');
