@@ -12,98 +12,24 @@
     <link rel=icon type=image/png sizes=512x512 href=favicon_io/android-chrome-512x512.png>
     <link rel="shortcut icon" href=favicon_io/favicon.ico>
     <style>
-      :root {
-        --bg-main: #f4f4f4;
-        --bg-gradient: linear-gradient(120deg, #f4f4f4 60%, #e3f0ff 100%);
-        --text-main: #333;
-        --header: #0056b3;
-        --header-shadow: #e3f0ff;
-        --input-bg: #fff;
-        --input-border: #cfd8dc;
-        --input-focus: #007bff;
-        --input-shadow: #b3d7ff;
-        --btn-bg: linear-gradient(90deg, #007bff 60%, #0056b3 100%);
-        --btn-bg-hover: linear-gradient(90deg, #0056b3 60%, #007bff 100%);
-        --btn-shadow: 0 2px 8px rgba(0,123,255,0.08);
-        --btn-text: #fff;
-        --clear-bg: #f8d7da;
-        --clear-bg-hover: #f5c6cb;
-        --clear-text: #b30000;
-        --clear-shadow: 0 2px 8px rgba(179,0,0,0.06);
-        --card-bg: #fff;
-        --card-border: #e3f0ff;
-        --card-shadow: 0 4px 18px rgba(0,0,0,0.08);
-        --entry-bg: #f7faff;
-        --entry-shadow: 0 1px 4px rgba(0,123,255,0.04);
-        --entry-bg-hover: #e3f0ff;
-        --error-bg: #ffe6e6;
-        --error-text: #b30000;
-        --error-border: #f5c6cb;
-        --success-bg: #e6ffe6;
-        --success-text: #006600;
-        --success-border: #b3ffb3;
-        --rf-border: #007bff;
-        --re-border: #ff9800;
-        --skeleton-box-bg: #f2f6fa;
-        --skeleton-entry-bg: #e3eaf1;
-        --skeleton-anim-bg: #f7faff;
-        /* Utility variables */
-        --spacing-xs: 6px;
-        --spacing-s: 12px;
-        --spacing-m: 18px;
-        --spacing-l: 24px;
-        --radius: 8px;
-        --font-main: 'Segoe UI', Arial, sans-serif;
-        --font-size-base: 1.1rem;
-        --font-size-lg: 2.2rem;
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0, #764ba2 50%, #f093fb 100%);
+        min-height: 100vh;
+        display: block;
+        position: relative;
+      }
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        pointer-events: none;
+        z-index: -1;
       }
       body.dark {
-        --bg-main: #181c1f;
-        --bg-gradient: linear-gradient(120deg, #23272b 60%, #181c1f 100%);
-        --text-main: #e3eaf1;
-        --header: #7bb6ff;
-        --header-shadow: #23272b;
-        --input-bg: #23272b;
-        --input-border: #3a4250;
-        --input-focus: #7bb6ff;
-        --input-shadow: #2a3a4d;
-        --btn-bg: linear-gradient(90deg, #1e90ff 60%, #0056b3 100%);
-        --btn-bg-hover: linear-gradient(90deg, #0056b3 60%, #1e90ff 100%);
-        --btn-shadow: 0 2px 8px rgba(30,144,255,0.10);
-        --btn-text: #fff;
-        --clear-bg: #3a4250;
-        --clear-bg-hover: #23272b;
-        --clear-text: #ffb3b3;
-        --clear-shadow: 0 2px 8px rgba(255,179,179,0.06);
-        --card-bg: #23272b;
-        --card-border: #2a3a4d;
-        --card-shadow: 0 4px 18px rgba(0,0,0,0.18);
-        --entry-bg: #23272b;
-        --entry-shadow: 0 1px 4px rgba(30,144,255,0.10);
-        --entry-bg-hover: #2a3a4d;
-        --error-bg: #3a1a1a;
-        --error-text: #ffb3b3;
-        --error-border: #b30000;
-        --success-bg: #1a3a1a;
-        --success-text: #b3ffb3;
-        --success-border: #006600;
-        --rf-border: #7bb6ff;
-        --re-border: #ffb366;
-        --skeleton-box-bg: #23272b;
-        --skeleton-entry-bg: #2a3a4d;
-        --skeleton-anim-bg: #23272b;
-      }
-      body {
-        font-family: 'Segoe UI', Arial, sans-serif;
-        padding: 40px;
-        background: var(--bg-gradient);
-        color: var(--text-main);
-        max-width: 700px;
-        margin: auto;
-        box-sizing: border-box;
-        min-height: 100vh;
-        overflow-x: hidden;
-        transition: background 0.4s, color 0.4s;
+        background: linear-gradient(135deg, #1a1a2e 0, #16213e 50%, #0f3460 100%);
       }
       h2 {
         font-size: 2.2rem;
