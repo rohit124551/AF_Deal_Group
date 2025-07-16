@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order ID Lookup Interface</title>
+    <link rel=apple-touch-icon sizes=180x180 href=favicon_io/apple-touch-icon.png>
+    <link rel=icon type=image/png sizes=32x32 href=favicon_io/favicon-32x32.png>
+    <link rel=icon type=image/png sizes=16x16 href=favicon_io/favicon-16x16.png>
+    <link rel=manifest href=favicon_io/site.webmanifest>
+    <link rel=icon type=image/png sizes=192x192 href=favicon_io/android-chrome-192x192.png>
+    <link rel=icon type=image/png sizes=512x512 href=favicon_io/android-chrome-512x512.png>
+    <link rel="shortcut icon" href=favicon_io/favicon.ico>
     <style>
       :root {
         --bg-main: #f4f4f4;
@@ -620,6 +627,19 @@
       window.onload = function() {
         document.getElementById("orderId").focus();
       };
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2PRMZL2Z5X"></script>
+    <script>
+      function gtag(){dataLayer.push(arguments)}
+      window.dataLayer=window.dataLayer||[];
+      gtag("js",new Date);
+      gtag("config","G-2PRMZL2Z5X",{
+        page_title:"Refund Form Filled Status",
+        custom_map:{custom_parameter_1:"user_device_type",custom_parameter_2:"user_session_duration"},
+        allow_enhanced_conversions:true,
+        engagement_time_msec:10000,
+        send_page_view:true
+      });
     </script>
   </body>
 </html>
